@@ -6,28 +6,41 @@ datasource db {
   provider = "postgresql"
 }
 
+// ── Project Categories ─────────────────────────────────────────
+model ProjectCategory {
+  id        String    @id @default(cuid())
+  name      String    @unique // e.g. "AI/ML", "Web Development"
+  slug      String    @unique // e.g. "ai-ml", "web-development"
+  projects  Project[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("project_categories")
+}
+
 // ── Portfolio Projects ─────────────────────────────────────────
 model Project {
-  id          Int      @id @default(autoincrement())
+  id          String          @id @default(cuid())
   title       String
-  category    String
   description String
   tags        String // JSON array string: '["Next.js","OpenAI"]'
-  color       String   @default("#f5c142")
+  color       String          @default("#f5c142")
   imageUrl    String?
   liveUrl     String?
   githubUrl   String?
-  featured    Boolean  @default(false)
-  published   Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  featured    Boolean         @default(false)
+  published   Boolean         @default(true)
+  categoryId  String
+  category    ProjectCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
 
   @@map("projects")
 }
 
 // ── Blog Posts ─────────────────────────────────────────────────
 model BlogPost {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   title     String
   slug      String   @unique
   excerpt   String
@@ -45,7 +58,7 @@ model BlogPost {
 
 // ── Newsletter Subscribers ─────────────────────────────────────
 model Subscriber {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   email     String   @unique
   name      String?
   createdAt DateTime @default(now())
@@ -64,7 +77,7 @@ model ChatSession {
 }
 
 model ChatMessage {
-  id        Int         @id @default(autoincrement())
+  id        String      @id @default(cuid())
   sessionId String
   session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   role      String // "user" | "assistant"
@@ -72,14 +85,4 @@ model ChatMessage {
   createdAt DateTime    @default(now())
 
   @@map("chat_messages")
-}
-
-// ── Admin Audit Log ────────────────────────────────────────────
-model AdminLog {
-  id        Int      @id @default(autoincrement())
-  action    String // e.g. "created_project", "deleted_blog"
-  detail    String?
-  createdAt DateTime @default(now())
-
-  @@map("admin_logs")
 }

@@ -36,7 +36,7 @@ export class SubscribersController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Remove a subscriber' })
   @ApiResponse({ status: 404, description: 'Subscriber not found' })
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id') id: string) {
     return this.subscribersService.remove(id);
   }
 }

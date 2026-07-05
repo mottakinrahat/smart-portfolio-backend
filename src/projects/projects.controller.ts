@@ -36,28 +36,28 @@ export class ProjectsController {
 
   @Get()
   @ApiOperation({ summary: 'List all projects' })
-  @ApiQuery({ name: 'category', required: false })
+  @ApiQuery({ name: 'categoryId', required: false })
   @ApiQuery({ name: 'featured', required: false, type: Boolean })
   @ApiQuery({ name: 'published', required: false, type: Boolean })
   findAll(
-    @Query('category') category?: string,
+    @Query('categoryId') categoryId?: string,
     @Query('featured') featured?: string,
     @Query('published') published?: string,
   ) {
-    return this.projectsService.findAll({ category, featured, published });
+    return this.projectsService.findAll({ categoryId, featured, published });
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get a project by ID' })
   @ApiResponse({ status: 404, description: 'Project not found' })
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id') id: string) {
     return this.projectsService.findOne(id);
   }
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update a project' })
   update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,
     @Body() dto: UpdateProjectDto,
   ) {
     return this.projectsService.update(id, dto);
@@ -66,7 +66,7 @@ export class ProjectsController {
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Delete a project' })
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id') id: string) {
     return this.projectsService.remove(id);
   }
 }

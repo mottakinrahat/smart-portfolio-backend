@@ -41,7 +41,7 @@ export class BlogController {
 
   @Get('id/:id')
   @ApiOperation({ summary: 'Get a blog post by ID' })
-  findById(@Param('id', ParseIntPipe) id: number) {
+  findById(@Param('id') id: string) {
     return this.blogService.findById(id);
   }
 
@@ -55,7 +55,7 @@ export class BlogController {
   @Patch(':id')
   @ApiOperation({ summary: 'Update a blog post' })
   update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,
     @Body() dto: UpdateBlogDto,
   ) {
     return this.blogService.update(id, dto);
@@ -64,7 +64,7 @@ export class BlogController {
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Delete a blog post' })
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id') id: string) {
     return this.blogService.remove(id);
   }
 }

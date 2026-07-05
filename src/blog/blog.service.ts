@@ -25,18 +25,9 @@ export class BlogService {
     });
     const slug = existing ? `${baseSlug}-${Date.now()}` : baseSlug;
 
-    const post = await this.prisma.blogPost.create({
+    return this.prisma.blogPost.create({
       data: { ...dto, slug },
     });
-
-    await this.prisma.adminLog.create({
-      data: {
-        action: 'created_blog',
-        detail: `Blog post "${post.title}" created (id=${post.id})`,
-      },
-    });
-
-    return post;
   }
 
   findAll(query: { category?: string; published?: string }) {
@@ -57,13 +48,13 @@ export class BlogService {
     return post;
   }
 
-  async findById(id: number) {
+  async findById(id: string) {
     const post = await this.prisma.blogPost.findUnique({ where: { id } });
     if (!post) throw new NotFoundException(`Blog post #${id} not found`);
     return post;
   }
 
-  async update(id: number, dto: UpdateBlogDto) {
+  async update(id: string, dto: UpdateBlogDto) {
     await this.findById(id);
 
     // Re-generate slug if title changed
@@ -76,32 +67,14 @@ export class BlogService {
       extra.slug = existing ? `${baseSlug}-${Date.now()}` : baseSlug;
     }
 
-    const post = await this.prisma.blogPost.update({
+    return this.prisma.blogPost.update({
       where: { id },
       data: { ...dto, ...extra },
     });
-
-    await this.prisma.adminLog.create({
-      data: {
-        action: 'updated_blog',
-        detail: `Blog post "${post.title}" updated (id=${post.id})`,
-      },
-    });
-
-    return post;
   }
 
-  async remove(id: number) {
-    const post = await this.findById(id);
+  async remove(id: string) {
     await this.prisma.blogPost.delete({ where: { id } });
-
-    await this.prisma.adminLog.create({
-      data: {
-        action: 'deleted_blog',
-        detail: `Blog post "${post.title}" deleted (id=${id})`,
-      },
-    });
-
     return { message: `Blog post #${id} deleted successfully` };
   }
 }

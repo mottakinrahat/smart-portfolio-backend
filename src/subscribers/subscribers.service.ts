@@ -21,16 +21,7 @@ export class SubscribersService {
       );
     }
 
-    const subscriber = await this.prisma.subscriber.create({ data: dto });
-
-    await this.prisma.adminLog.create({
-      data: {
-        action: 'new_subscriber',
-        detail: `${dto.email} subscribed to the newsletter`,
-      },
-    });
-
-    return subscriber;
+    return this.prisma.subscriber.create({ data: dto });
   }
 
   findAll() {
@@ -39,7 +30,7 @@ export class SubscribersService {
     });
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const subscriber = await this.prisma.subscriber.findUnique({
       where: { id },
     });
@@ -49,14 +40,6 @@ export class SubscribersService {
     }
 
     await this.prisma.subscriber.delete({ where: { id } });
-
-    await this.prisma.adminLog.create({
-      data: {
-        action: 'removed_subscriber',
-        detail: `${subscriber.email} unsubscribed`,
-      },
-    });
-
     return { message: `Subscriber #${id} removed successfully` };
   }
 }

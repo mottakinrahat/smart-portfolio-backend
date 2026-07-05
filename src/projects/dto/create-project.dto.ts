@@ -14,10 +14,10 @@ export class CreateProjectDto {
   @IsNotEmpty()
   title: string;
 
-  @ApiProperty({ example: 'Web Development' })
+  @ApiProperty({ example: 'cly1234567890abcdef' })
   @IsString()
   @IsNotEmpty()
-  category: string;
+  categoryId: string;
 
   @ApiProperty({ example: 'A full-stack portfolio powered by AI.' })
   @IsString()
