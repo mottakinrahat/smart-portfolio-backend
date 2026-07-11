@@ -8,7 +8,7 @@ datasource db {
 
 // ── Project Categories ─────────────────────────────────────────
 model ProjectCategory {
-  id        String    @id @default(cuid())
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name      String    @unique // e.g. "AI/ML", "Web Development"
   slug      String    @unique // e.g. "ai-ml", "web-development"
   projects  Project[]
@@ -20,7 +20,7 @@ model ProjectCategory {
 
 // ── Portfolio Projects ─────────────────────────────────────────
 model Project {
-  id          String          @id @default(cuid())
+  id          String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   title       String
   description String
   tags        String // JSON array string: '["Next.js","OpenAI"]'
@@ -30,7 +30,7 @@ model Project {
   githubUrl   String?
   featured    Boolean         @default(false)
   published   Boolean         @default(true)
-  categoryId  String
+  categoryId  String          @db.Uuid
   category    ProjectCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
@@ -40,7 +40,7 @@ model Project {
 
 // ── Blog Posts ─────────────────────────────────────────────────
 model BlogPost {
-  id        String   @id @default(cuid())
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   title     String
   slug      String   @unique
   excerpt   String
@@ -58,7 +58,7 @@ model BlogPost {
 
 // ── Newsletter Subscribers ─────────────────────────────────────
 model Subscriber {
-  id        String   @id @default(cuid())
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   email     String   @unique
   name      String?
   createdAt DateTime @default(now())
@@ -68,7 +68,7 @@ model Subscriber {
 
 // ── AI Chatbot ("Ask Rahat") ───────────────────────────────────
 model ChatSession {
-  id        String        @id @default(cuid())
+  id        String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   messages  ChatMessage[]
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
@@ -77,8 +77,8 @@ model ChatSession {
 }
 
 model ChatMessage {
-  id        String      @id @default(cuid())
-  sessionId String
+  id        String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sessionId String      @db.Uuid
   session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   role      String // "user" | "assistant"
   content   String

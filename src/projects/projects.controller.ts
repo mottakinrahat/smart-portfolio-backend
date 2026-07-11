@@ -30,7 +30,6 @@ export class ProjectsController {
   @ApiOperation({ summary: 'Create a new project' })
   @ApiResponse({ status: 201, description: 'Project created successfully' })
   create(@Body() dto: CreateProjectDto) {
-    console.log(dto);
     return this.projectsService.create(dto);
   }
 
