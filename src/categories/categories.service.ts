@@ -1,4 +1,8 @@
-import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 
@@ -62,7 +66,7 @@ export class CategoriesService {
 
   async remove(id: string) {
     const category = await this.findOne(id);
-    
+
     if (category.projects.length > 0) {
       throw new ConflictException(
         `Cannot delete category because it has ${category.projects.length} associated projects`,

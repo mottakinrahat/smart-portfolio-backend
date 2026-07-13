@@ -22,11 +22,16 @@ export class ProjectsService {
     });
   }
 
-  findAll(query: { categoryId?: string; featured?: string; published?: string }) {
+  findAll(query: {
+    categoryId?: string;
+    featured?: string;
+    published?: string;
+  }) {
     const where: Record<string, unknown> = {};
 
     if (query.categoryId) where.categoryId = query.categoryId;
-    if (query.featured !== undefined) where.featured = query.featured === 'true';
+    if (query.featured !== undefined)
+      where.featured = query.featured === 'true';
     if (query.published !== undefined)
       where.published = query.published === 'true';
 

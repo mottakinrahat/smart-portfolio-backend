@@ -6,17 +6,11 @@ import {
   Patch,
   Param,
   Delete,
-  ParseIntPipe,
   Query,
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiQuery,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
@@ -55,10 +49,7 @@ export class ProjectsController {
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update a project' })
-  update(
-    @Param('id') id: string,
-    @Body() dto: UpdateProjectDto,
-  ) {
+  update(@Param('id') id: string, @Body() dto: UpdateProjectDto) {
     return this.projectsService.update(id, dto);
   }
 

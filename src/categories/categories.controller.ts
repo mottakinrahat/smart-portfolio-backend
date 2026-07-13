@@ -20,7 +20,10 @@ export class CategoriesController {
   @Post()
   @ApiOperation({ summary: 'Create a new project category' })
   @ApiResponse({ status: 201, description: 'Category created successfully' })
-  @ApiResponse({ status: 409, description: 'Category name or slug already exists' })
+  @ApiResponse({
+    status: 409,
+    description: 'Category name or slug already exists',
+  })
   create(@Body() dto: CreateCategoryDto) {
     return this.categoriesService.create(dto);
   }

@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  ParseIntPipe,
   Query,
   HttpCode,
   HttpStatus,
@@ -54,10 +53,7 @@ export class BlogController {
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update a blog post' })
-  update(
-    @Param('id') id: string,
-    @Body() dto: UpdateBlogDto,
-  ) {
+  update(@Param('id') id: string, @Body() dto: UpdateBlogDto) {
     return this.blogService.update(id, dto);
   }
 

@@ -1,4 +1,4 @@
-import { NestFactory, Reflector } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
@@ -63,4 +63,6 @@ async function bootstrap() {
   console.log(`📄 Swagger docs at:   http://localhost:${port}/api/v1/docs`);
 }
 
-bootstrap();
+bootstrap().catch((err) => {
+  console.error('Failed to bootstrap application:', err);
+});
