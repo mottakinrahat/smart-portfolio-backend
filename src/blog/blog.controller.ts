@@ -29,13 +29,9 @@ export class BlogController {
 
   @Get()
   @ApiOperation({ summary: 'List all blog posts' })
-  @ApiQuery({ name: 'category', required: false })
   @ApiQuery({ name: 'published', required: false, type: Boolean })
-  findAll(
-    @Query('category') category?: string,
-    @Query('published') published?: string,
-  ) {
-    return this.blogService.findAll({ category, published });
+  findAll(@Query('published') published?: string) {
+    return this.blogService.findAll({ published });
   }
 
   @Get('id/:id')

@@ -24,10 +24,10 @@ export class CreateBlogDto {
   @IsNotEmpty()
   content: string;
 
-  @ApiProperty({ example: 'AI & Tech' })
+  @ApiPropertyOptional({ example: 'AI / ML' })
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
-  category: string;
+  category?: string;
 
   @ApiProperty({ example: '5 min read' })
   @IsString()
@@ -49,3 +49,4 @@ export class CreateBlogDto {
   @IsBoolean()
   published?: boolean;
 }
+

@@ -45,7 +45,7 @@ model BlogPost {
   slug      String   @unique
   excerpt   String
   content   String // Full markdown body
-  category  String
+  category  String   @default("") // e.g. "AI/ML", "Web Development"
   readTime  String // e.g. "5 min read"
   color     String   @default("#f5c142")
   imageUrl  String?

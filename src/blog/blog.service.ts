@@ -30,9 +30,8 @@ export class BlogService {
     });
   }
 
-  findAll(query: { category?: string; published?: string }) {
+  findAll(query: { published?: string }) {
     const where: Record<string, unknown> = {};
-    if (query.category) where.category = query.category;
     if (query.published !== undefined)
       where.published = query.published === 'true';
 
