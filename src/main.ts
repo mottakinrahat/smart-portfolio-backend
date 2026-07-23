@@ -14,8 +14,10 @@ async function bootstrap() {
   // ── CORS ────────────────────────────────────────────────────
   const allowedOrigins = (
     process.env.CORS_ORIGINS ??
-    'http://localhost:3000,http://localhost:3001,https://md-mottakin-rahat.vercel.app'
-  ).split(',');
+    'http://localhost:3000,http://localhost:3001,http://localhost:5173,https://md-mottakin-rahat.vercel.app'
+  )
+    .split(',')
+    .map((origin) => origin.trim());
 
   app.enableCors({
     origin: allowedOrigins,
