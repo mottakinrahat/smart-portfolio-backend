@@ -18,8 +18,16 @@ export class PrismaService
   constructor() {
     const connectionString = process.env.DATABASE_URL;
 
-    // Create the pg pool
-    const pool = new Pool({ connectionString });
+    // Create the pg pool with pooling configuration
+    const pool = new Pool({
+      connectionString,
+      max: 10,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 5000,
+      ssl: connectionString?.includes('sslmode=')
+        ? { rejectUnauthorized: false }
+        : undefined,
+    });
 
     // Create the Prisma adapter
     const adapter = new PrismaPg(pool);
