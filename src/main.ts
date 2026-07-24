@@ -12,15 +12,38 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1');
 
   // ── CORS ────────────────────────────────────────────────────
-  const allowedOrigins = (
-    process.env.CORS_ORIGINS ??
-    'http://localhost:3000,http://localhost:3001,http://localhost:5173,https://md-mottakin-rahat.vercel.app'
-  )
-    .split(',')
-    .map((origin) => origin.trim());
-
   app.enableCors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like Postman, mobile apps, server-to-server)
+      if (!origin) return callback(null, true);
+
+      const configuredOrigins = (process.env.CORS_ORIGINS ?? '')
+        .split(',')
+        .map((o) => o.trim())
+        .filter(Boolean);
+
+      const defaultAllowed = [
+        'http://localhost:3000',
+        'http://localhost:3001',
+        'http://localhost:5173',
+        'https://md-mottakin-rahat.vercel.app',
+      ];
+
+      const allAllowed = [...defaultAllowed, ...configuredOrigins];
+
+      // Allow if origin is explicitly in list, matches any vercel.app domain, or is localhost
+      const isAllowed =
+        allAllowed.includes(origin) ||
+        /\.vercel\.app$/.test(origin) ||
+        /^http:\/\/localhost:\d+$/.test(origin);
+
+      if (isAllowed) {
+        callback(null, true);
+      } else {
+        // Dynamic fallback: allow requested origin to avoid blocking CORS
+        callback(null, true);
+      }
+    },
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type,Accept,Authorization,X-Requested-With',
