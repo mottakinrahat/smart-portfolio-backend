@@ -49,4 +49,3 @@ export class CreateBlogDto {
   @IsBoolean()
   published?: boolean;
 }
-
